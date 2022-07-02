@@ -1,14 +1,23 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, CSSProperties, KeyboardEvent, useState} from 'react';
 import {FilterType, TasksType} from "./App";
 
 export type PropsType = {
     tasks: TasksType
+    filter: string // для подсветки кнопок и active checkbox
 
     changeFilterStatus: (filter: FilterType) => void
     removeTaskHandler: (id: string) => void
     changeStatusHandler: (id: string, isDone: boolean) => void
     createTaskHandler: (title: string) => void
 
+}
+
+const activeButtonStyle: CSSProperties = {
+    backgroundColor: "lightblue"
+}
+const isDoneStyle: CSSProperties = {
+    opacity: 0.5,
+    textDecoration: 'line-through'
 }
 
 export function Todolist(props: PropsType) {
@@ -74,8 +83,10 @@ export function Todolist(props: PropsType) {
 
                     return (
                         <li key={t.id} style={{listStyle: 'none'}}>
-                            <input type="checkbox" checked={t.isDone} onChange={onchangeHandler}/>
-                            <span>{t.title}</span>
+                            <input type="checkbox"
+                                   checked={t.isDone}
+                                   onChange={onchangeHandler}/>
+                            <span style={t.isDone ? isDoneStyle : {}}>{t.title}</span>
                             <button style={{margin: 5}} onClick={onDeleteHandler}>X</button>
                         </li>
                     )
@@ -83,9 +94,13 @@ export function Todolist(props: PropsType) {
                 }
             </ul>
             <div>
-                <button onClick={onAllClickHandler}>All</button>
-                <button onClick={onActiveClickHandler}>Active</button>
-                <button onClick={onCompleteClickHandler}>Completed</button>
+                <button onClick={onAllClickHandler} style={props.filter === 'all' ? activeButtonStyle : {}}>All</button>
+                <button onClick={onActiveClickHandler}
+                        style={props.filter === 'active' ? activeButtonStyle : {}}>Active
+                </button>
+                <button onClick={onCompleteClickHandler}
+                        style={props.filter === 'completed' ? activeButtonStyle : {}}>Completed
+                </button>
             </div>
 
         </div>
