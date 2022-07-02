@@ -72,12 +72,13 @@ function App() {
     }
 
     const createTaskHandler = (title: string) => {
-
         const newTask = {
-            id: v1(), title, isDone: false
+            id: v1(),
+            title,
+            isDone: false
         }
 
-        setTasks([newTask, ...tasks]) // ?
+        setTasks([newTask, ...tasks])
     }
 
     return (

@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent,useState} from 'react';
 import {FilterType, TasksType} from "./App";
 
 export type PropsType = {
@@ -13,8 +13,13 @@ export type PropsType = {
 
 export function Todolist(props: PropsType) {
 
-    const [taskTitle, setTaskTitle] = useState<string>('')
-    const [errorTaskTitle, setErrorTaskTitle] = useState<boolean>(false)
+    const [newTitle, setNewTitle] = useState<string>('')
+    const onNewTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
+        setNewTitle(e.currentTarget.value)
+        errorTitle && setErrorTitle(false)
+    };
+
+    const [errorTitle, setErrorTitle] = useState<boolean>(false)
 
     const onAllClickHandler = () => {
         props.changeFilterStatus('all')
@@ -29,31 +34,18 @@ export function Todolist(props: PropsType) {
     };
 
     const onAddClickHandler = () => {
-        if (taskTitle.trim()) {
-        props.createTaskHandler(taskTitle.trim())
-        setTaskTitle('')
+        if (newTitle.trim()) {
+            props.createTaskHandler(newTitle.trim())
+            setNewTitle('')
         } else {
-            setErrorTaskTitle(true)
+            setErrorTitle(true)
         }
     };
 
-    const onNewTitleChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-        setTaskTitle(e.currentTarget.value)
-        errorTaskTitle && setErrorTaskTitle(false)
-    };
-
     const onEnterHandler = (e: KeyboardEvent<HTMLInputElement>) => {
-        // if (e.key === 'Enter') {
-        //     onAddClickHandler()
-        // }
-
         (e.key === 'Enter') && onAddClickHandler()
-
     };
 
-    const activeButtonStyle = {
-        backgroundColor: 'lightblue'
-    }
 
     return (
         <div>
@@ -61,18 +53,17 @@ export function Todolist(props: PropsType) {
             <h3>ToDo!</h3>
             <div>
                 <input type="textarea"
-                       onChange={onNewTitleChangeHandler}
-                       value={taskTitle}
+                       onChange={onNewTitleHandler}
+                       value={newTitle}
                        onKeyDown={onEnterHandler}
                 />
                 <button onClick={onAddClickHandler}>Create</button>
                 <div style={{color: "red"}}>
-                    {errorTaskTitle && 'Invalid value!'}
+                    {errorTitle && "Invalid value!"}
                 </div>
             </div>
             <ul>
                 {props.tasks.map((t) => {
-
                     const onchangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
                         props.changeStatusHandler(t.id, e.currentTarget.checked)
                     };
@@ -82,9 +73,7 @@ export function Todolist(props: PropsType) {
                     };
 
                     return (
-
                         <li key={t.id} style={{listStyle: 'none'}}>
-
                             <input type="checkbox" checked={t.isDone} onChange={onchangeHandler}/>
                             <span>{t.title}</span>
                             <button style={{margin: 5}} onClick={onDeleteHandler}>X</button>
