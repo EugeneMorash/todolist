@@ -85,6 +85,7 @@ function App() {
         <div>
             <Todolist
                 tasks={filteredTask}
+                filter={filter}
 
                 changeFilterStatus={changeFilterStatus}
                 removeTaskHandler={removeTaskHandler}
