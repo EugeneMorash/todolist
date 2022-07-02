@@ -1,4 +1,4 @@
-import React, {ChangeEvent, KeyboardEvent,useState} from 'react';
+import React, {ChangeEvent, KeyboardEvent, useState} from 'react';
 import {FilterType, TasksType} from "./App";
 
 export type PropsType = {
