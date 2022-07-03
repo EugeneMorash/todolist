@@ -3,8 +3,7 @@ import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Todolist";
 
-export type TasksType = Array<TaskType>
-
+export type TAsksType = Array<TaskType>
 export type TaskType = {
     id: string
     title: string
@@ -12,7 +11,6 @@ export type TaskType = {
 }
 
 export type FilterType = 'all' | 'active' | 'completed'
-
 
 function App() {
 
@@ -25,6 +23,7 @@ function App() {
         {id: v1(), title: 'Juice', isDone: true},
     ])
 
+    const [filter, setFilter] = useState('all')
 
 //     const [tasks, setTAsks] = useState<TasksType>({
 //     [todolistID_1]: [
@@ -45,9 +44,15 @@ function App() {
 // ],
 //
 // })
+    const changeStatusHandler = (id: string, isDone: boolean) => {
+        setTasks(tasks.map(t => t.id === id ? {...t, isDone} : t))
+    }
 
-    const [filter, setFilter] = useState('all')
-    const changeFilterStatus = (filter: FilterType) => {
+    const deleteTaskHandler = (id: string) => {
+        setTasks(tasks.filter(t => t.id !== id))
+    }
+
+    const filterChangeHandler = (filter: FilterType) => {
         setFilter(filter)
     }
 
@@ -56,19 +61,6 @@ function App() {
         filteredTask = tasks.filter(t => !t.isDone)
     } else if (filter === 'completed') {
         filteredTask = tasks.filter(t => t.isDone)
-    }
-
-    const removeTaskHandler = (id: string) => {
-        setTasks(tasks.filter(t => t.id !== id))
-    }
-
-    const changeStatusHandler = (id: string, isDone: boolean) => {
-        setTasks(tasks.map(t => {
-                return (
-                    t.id === id ? {...t, isDone} : t
-                )
-            }
-        ))
     }
 
     const createTaskHandler = (title: string) => {
@@ -85,16 +77,15 @@ function App() {
         <div>
             <Todolist
                 tasks={filteredTask}
-                filter={filter}
+                filterForButton={filter}
 
-                changeFilterStatus={changeFilterStatus}
-                removeTaskHandler={removeTaskHandler}
                 changeStatusHandler={changeStatusHandler}
+                deleteTaskHandler={deleteTaskHandler}
+                filterChangeHandler={filterChangeHandler}
                 createTaskHandler={createTaskHandler}
             />
         </div>
     )
-
 }
 
 export default App;
