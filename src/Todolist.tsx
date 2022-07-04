@@ -1,6 +1,7 @@
 import React, {ChangeEvent, CSSProperties, KeyboardEvent, useState} from 'react';
 import {FilterType, TAsksType} from "./App";
-
+import {Button, ButtonGroup, Checkbox, IconButton, TextField, Typography} from "@material-ui/core";
+import {Delete as DeleteIcon} from "@material-ui/icons";
 
 
 export type PropsType = {
@@ -57,14 +58,23 @@ export function Todolist(props: PropsType) {
 
 
         <div>
-            <h3>ToDo!</h3>
+            <Typography variant="h4" component="h3">
+                ToDo!
+            </Typography>
+            {/*<h3>ToDo!</h3>*/}
             <div>
-                <input type="textarea"
-                       onChange={onChangeNewTaskHandler}
-                       onKeyDown={onEnterHandler}
-                       value={newTask}
-                />
-                <button onClick={onCreateHandler}>Create</button>
+                <form noValidate autoComplete="off">
+
+                    <TextField id="outlined-basic" label="Enter new title" variant="outlined" type="textarea"
+                               onChange={onChangeNewTaskHandler}
+                               onKeyDown={onEnterHandler}
+                               value={newTask}
+                               size='small'
+                    />
+                    <Button variant="contained" color="primary" onClick={onCreateHandler}>Create</Button>
+                </form>
+
+
                 <div style={{color: 'red'}}>
                     {invalidTitle && 'Invalid value!'}
                 </div>
@@ -82,23 +92,34 @@ export function Todolist(props: PropsType) {
 
                     return (
                         <li key={t.id} style={{listStyle: 'none'}}>
-                            <input type="checkbox" checked={t.isDone} onChange={onChangeHandler}/>
+                            <Checkbox checked={t.isDone} onChange={onChangeHandler}/>
                             <span style={t.isDone ? checkedStyle : {}}>{t.title}</span>
-                            <button style={{margin: 5}} onClick={OnDeleteHandler}>X</button>
+                            {/*<button style={{margin: 5}} onClick={OnDeleteHandler}>X</button>*/}
+
+                            <IconButton onClick={OnDeleteHandler}
+                                        aria-label='delete'
+                                        color='secondary'>
+                                <DeleteIcon fontSize='small'/>
+                            </IconButton>
 
                         </li>
                     )
                 })}
             </ul>
-            <button onClick={onAllClickHandler}
-                    style={props.filterForButton === 'all' ? {backgroundColor: 'lightblue'} : {}}>All
-            </button>
-            <button onClick={onActiveClickHandler}
-                    style={props.filterForButton === 'active' ? {backgroundColor: 'lightblue'} : {}}>Active
-            </button>
-            <button onClick={onCompletedClickHandler}
-                    style={props.filterForButton === 'completed' ? {backgroundColor: 'lightblue'} : {}}>Completed
-            </button>
+
+            <ButtonGroup color="primary" aria-label="outlined primary button group">
+                <Button onClick={onAllClickHandler}
+                        style={props.filterForButton === 'all' ? {backgroundColor: 'lightblue'} : {}}>All
+                </Button>
+                <Button onClick={onActiveClickHandler}
+                        style={props.filterForButton === 'active' ? {backgroundColor: 'lightpink'} : {}}>Active
+                </Button>
+                <Button onClick={onCompletedClickHandler}
+                        style={props.filterForButton === 'completed' ? {backgroundColor: 'lightgreen'} : {}}>Completed
+                </Button>
+            </ButtonGroup>
+
+
         </div>
     );
 }
