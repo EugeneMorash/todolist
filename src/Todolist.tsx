@@ -8,11 +8,12 @@ export type PropsType = {
     tasks: Array<TaskType>
     filter: FilterType
     title: string
+    todolistID:string
 
-    changeStatusHandler: (id: string, isDone: boolean) => void
-    deleteTaskHandler: (id: string) => void
-    filterChangeHandler: (filter: FilterType) => void
-    createTaskHandler: (title: string) => void
+    changeStatusHandler: (todolistID: string, id: string, isDone: boolean) => void
+    deleteTaskHandler: (todolistID: string, id: string) => void
+    filterChangeHandler: (todolistID: string, filter: FilterType) => void
+    createTaskHandler: (todolistID: string, title: string) => void
 }
 
 const checkedStyle: CSSProperties = {
@@ -26,20 +27,20 @@ export function Todolist(props: PropsType) {
     const [invalidTitle, setInvalidTitle] = useState<boolean>(false)
 
     const onAllClickHandler = () => {
-        props.filterChangeHandler('all')
+        props.filterChangeHandler(props.todolistID, 'all')
     };
 
     const onActiveClickHandler = () => {
-        props.filterChangeHandler('active')
+        props.filterChangeHandler(props.todolistID, 'active')
     };
 
     const onCompletedClickHandler = () => {
-        props.filterChangeHandler('completed')
+        props.filterChangeHandler(props.todolistID,'completed')
     };
 
     const onCreateHandler = () => {
         if (newTask.trim()) {
-            props.createTaskHandler(newTask.trim())
+            props.createTaskHandler(props.todolistID, newTask.trim())
             setNewTask('')
         } else {
             setInvalidTitle(true)
@@ -62,7 +63,7 @@ export function Todolist(props: PropsType) {
             <Typography variant="h4" component="h3">
                 {props.title}
             </Typography>
-            {/*<h3>ToDo!</h3>*/}
+
             <div>
                 <form noValidate autoComplete="off">
 
@@ -84,11 +85,11 @@ export function Todolist(props: PropsType) {
                 {props.tasks.map(t => {
 
                     const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
-                        props.changeStatusHandler(t.id, e.currentTarget.checked)
+                        props.changeStatusHandler(props.todolistID, t.id, e.currentTarget.checked)
                     };
 
                     const OnDeleteHandler = () => {
-                        props.deleteTaskHandler(t.id)
+                        props.deleteTaskHandler(props.todolistID, t.id)
                     };
 
                     return (

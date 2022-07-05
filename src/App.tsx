@@ -34,19 +34,6 @@ export type FilterType = 'all' | 'active' | 'completed'
 
 function App() {
 
-    // const [tasks, setTasks] = useState([
-    //     {id: v1(), title: 'Water', isDone: false},
-    //     {id: v1(), title: 'Milk', isDone: true},
-    //     {id: v1(), title: 'Beer', isDone: true},
-    //     {id: v1(), title: 'Lemonade', isDone: false},
-    //     {id: v1(), title: 'Wine', isDone: false},
-    //     {id: v1(), title: 'Juice', isDone: true},
-    // ])
-
-
-    // const [filter, setFilter] = useState('all')
-
-
     // function useStateTest<T>(state: T) {
     //     return [state, (newState: T) => {
     //         console.log('render', newState)}]
@@ -87,39 +74,54 @@ function App() {
         ],
     })
 
-    const changeStatusHandler = (id: string, isDone: boolean) => {
-        // setTasks(tasks.map(t => t.id === id ? {...t, isDone} : t))
+    const changeStatusHandler = (todolistID: string, id: string, isDone: boolean) => {
+        setTasks({
+            ...tasks,
+            [todolistID]: tasks[todolistID].map(t => t.id === id ? {...t, isDone} : t)
+        })
     }
-    const deleteTaskHandler = (id: string) => {
-        // setTasks(tasks.filter(t => t.id !== id))
+    const deleteTaskHandler = (todolistID: string, id: string) => {
+        setTasks({
+            ...tasks,
+            [todolistID]: tasks[todolistID].filter(t => t.id !== id)
+        })
     }
-    const filterChangeHandler = (filter: FilterType) => {
-        // setFilter(filter)
+    const filterChangeHandler = (todolistID: string, filter: FilterType) => {
+        setTodolists(todolists.map((tl) => {
+            return tl.todolistID === todolistID ? {...tl, filter} : tl
+        }))
     }
-    const createTaskHandler = (title: string) => {
-        // const newTask = {
-        //     id: v1(),
-        //     title,
-        //     isDone: false
-        // }
-        //
-        // setTasks([newTask, ...tasks])
+    const createTaskHandler = (todolistID: string, title: string) => {
+        const newTask = {
+            id: v1(),
+            title,
+            isDone: false
+        }
+
+        setTasks({
+            ...tasks,
+            [todolistID]: [newTask, ...tasks[todolistID]]
+        })
     }
-    // let filteredTask = tasks
-    // if (filter === 'active') {
-    //     filteredTask = tasks.filter(t => !t.isDone)
-    // } else if (filter === 'completed') {
-    //     filteredTask = tasks.filter(t => t.isDone)
-    // }
+
 
 
     const todolistsArray = todolists.map((tl) => {
+
+        let filteredTask = tasks[tl.todolistID]
+        if (tl.filter === 'active') {
+            filteredTask = tasks[tl.todolistID].filter(t => !t.isDone)
+        } else if (tl.filter === 'completed') {
+            filteredTask = tasks[tl.todolistID].filter(t => t.isDone)
+        }
+
         return (
             <Grid item key={tl.todolistID}>
                 <Todolist
-                    tasks={tasks[tl.todolistID]}
+                    tasks={filteredTask}
                     filter={tl.filter}
                     title={tl.title}
+                    todolistID={tl.todolistID}
 
                     changeStatusHandler={changeStatusHandler}
                     deleteTaskHandler={deleteTaskHandler}
@@ -133,7 +135,7 @@ function App() {
     {
 
         return (
-            <Grid container spacing={3}>
+            <Grid container spacing={3} style={{margin: 5}}>
                 {todolistsArray}
             </Grid>
         )
