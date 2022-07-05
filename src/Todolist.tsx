@@ -1,12 +1,13 @@
 import React, {ChangeEvent, CSSProperties, KeyboardEvent, useState} from 'react';
-import {FilterType, TAsksType} from "./App";
+import {FilterType, TasksType, TaskType} from "./App";
 import {Button, ButtonGroup, Checkbox, IconButton, TextField, Typography} from "@material-ui/core";
 import {Delete as DeleteIcon} from "@material-ui/icons";
 
 
 export type PropsType = {
-    tasks: TAsksType
-    filterForButton: string
+    tasks: Array<TaskType>
+    filter: FilterType
+    title: string
 
     changeStatusHandler: (id: string, isDone: boolean) => void
     deleteTaskHandler: (id: string) => void
@@ -59,7 +60,7 @@ export function Todolist(props: PropsType) {
 
         <div>
             <Typography variant="h4" component="h3">
-                ToDo!
+                {props.title}
             </Typography>
             {/*<h3>ToDo!</h3>*/}
             <div>
@@ -109,13 +110,13 @@ export function Todolist(props: PropsType) {
 
             <ButtonGroup color="primary" aria-label="outlined primary button group">
                 <Button onClick={onAllClickHandler}
-                        style={props.filterForButton === 'all' ? {backgroundColor: 'lightblue'} : {}}>All
+                        style={props.filter === 'all' ? {backgroundColor: 'lightblue'} : {}}>All
                 </Button>
                 <Button onClick={onActiveClickHandler}
-                        style={props.filterForButton === 'active' ? {backgroundColor: 'lightpink'} : {}}>Active
+                        style={props.filter === 'active' ? {backgroundColor: 'lightpink'} : {}}>Active
                 </Button>
                 <Button onClick={onCompletedClickHandler}
-                        style={props.filterForButton === 'completed' ? {backgroundColor: 'lightgreen'} : {}}>Completed
+                        style={props.filter === 'completed' ? {backgroundColor: 'lightgreen'} : {}}>Completed
                 </Button>
             </ButtonGroup>
 
