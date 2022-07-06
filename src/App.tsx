@@ -7,7 +7,6 @@ import {Grid} from "@material-ui/core";
 
 export type TasksType = {
     [xxx: string]: Array<TaskType>
-//    key: value
 }
 
 // export type object = {
