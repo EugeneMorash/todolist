@@ -2,7 +2,9 @@ import React, {useState} from 'react';
 import './App.css';
 import {v1} from "uuid";
 import {Todolist} from "./Todolist";
-import {Grid} from "@material-ui/core";
+import {AppBar, Grid, IconButton, Toolbar, Typography} from "@material-ui/core";
+import {Menu} from "@material-ui/icons";
+import {AddTodolist} from "./AddTodolist";
 
 
 export type TasksType = {
@@ -14,7 +16,6 @@ export type TasksType = {
 //     key2: valueType2
 //     [variable: string]: valueType3
 // }
-
 
 
 export type TaskType = {
@@ -103,6 +104,10 @@ function App() {
         })
     }
 
+    const deleteTodolistHandler = (todolistID: string) => {
+        setTodolists(todolists.filter((tl) => tl.todolistID !== todolistID))
+        delete tasks[todolistID]
+    }
 
 
     const todolistsArray = todolists.map((tl) => {
@@ -114,6 +119,7 @@ function App() {
             filteredTask = tasks[tl.todolistID].filter(t => t.isDone)
         }
 
+
         return (
             <Grid item key={tl.todolistID}>
                 <Todolist
@@ -124,6 +130,7 @@ function App() {
 
                     changeStatusHandler={changeStatusHandler}
                     deleteTaskHandler={deleteTaskHandler}
+                    deleteTodolistHandler={deleteTodolistHandler}
                     filterChangeHandler={filterChangeHandler}
                     createTaskHandler={createTaskHandler}
                 />
@@ -131,14 +138,36 @@ function App() {
         )
     })
 
-    {
+    const addTodo = (title: string) => {
+        const newTodolistID = v1()
+        const newTodolist: TodolistType = {
+            todolistID: newTodolistID,
+            title,
+            filter: 'all'
+        }
+        setTodolists([newTodolist, ...todolists])
+        setTasks({...tasks, [newTodolistID]: []})
+    }
 
-        return (
+    return (
+        <div>
+            <AppBar position="static">
+                <Toolbar>
+                    <IconButton edge="start" color="inherit" aria-label="menu">
+                        <Menu/>
+                    </IconButton>
+                    <Typography variant="h5">
+                        Best Todolist Ever
+                    </Typography>
+                    <AddTodolist addTodo={addTodo}/>
+                </Toolbar>
+            </AppBar>
             <Grid container spacing={3} style={{margin: 5}}>
                 {todolistsArray}
             </Grid>
-        )
-    }
+        </div>
+    )
+
 
 }
 

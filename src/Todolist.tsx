@@ -1,17 +1,19 @@
 import React, {ChangeEvent, CSSProperties, KeyboardEvent, useState} from 'react';
-import {FilterType, TasksType, TaskType} from "./App";
+import {FilterType, TaskType} from "./App";
 import {Button, ButtonGroup, Checkbox, IconButton, TextField, Typography} from "@material-ui/core";
 import {Delete as DeleteIcon} from "@material-ui/icons";
+import {ClearRounded as ClearIcon} from '@material-ui/icons/';
 
 
 export type PropsType = {
     tasks: Array<TaskType>
     filter: FilterType
     title: string
-    todolistID:string
+    todolistID: string
 
     changeStatusHandler: (todolistID: string, id: string, isDone: boolean) => void
     deleteTaskHandler: (todolistID: string, id: string) => void
+    deleteTodolistHandler: (todolistID: string) => void
     filterChangeHandler: (todolistID: string, filter: FilterType) => void
     createTaskHandler: (todolistID: string, title: string) => void
 }
@@ -35,7 +37,7 @@ export function Todolist(props: PropsType) {
     };
 
     const onCompletedClickHandler = () => {
-        props.filterChangeHandler(props.todolistID,'completed')
+        props.filterChangeHandler(props.todolistID, 'completed')
     };
 
     const onCreateHandler = () => {
@@ -56,12 +58,21 @@ export function Todolist(props: PropsType) {
         e.key === 'Enter' && onCreateHandler()
     };
 
+    const OnDeleteTaskHandler = () => {
+        props.deleteTodolistHandler(props.todolistID)
+    };
+
     return (
 
 
         <div>
             <Typography variant="h4" component="h3">
                 {props.title}
+                <IconButton onClick={OnDeleteTaskHandler}
+                            aria-label='delete'
+                            color='secondary'>
+                    <ClearIcon fontSize='large'/>
+                </IconButton>
             </Typography>
 
             <div>
