@@ -1,5 +1,5 @@
 # Todolist
 
-Crud + Material UI
+CRUD + Material UI
 
-Вы можете посмотреть сайт [здесь](https://eugenemorash.github.io/todolist/)
+You can view the website [here](https://eugenemorash.github.io/todolist/)
