@@ -65,6 +65,9 @@ export function Todolist(props: PropsType) {
         props.deleteTodolistHandler(props.todolistID)
     };
 
+    const onChangeTitleTodolist = (title: string) => {
+
+    }
 
     return (
 
