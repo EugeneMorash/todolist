@@ -24,8 +24,9 @@ const checkedStyle: CSSProperties = {
     textDecoration: 'line-through'
 }
 
-export function Todolist(props: PropsType) {
 
+
+export function Todolist(props: PropsType) {
 
     const [newTask, setNewTask] = useState<string>('')
     const [invalidTitle, setInvalidTitle] = useState<boolean>(false)
@@ -64,9 +65,6 @@ export function Todolist(props: PropsType) {
         props.deleteTodolistHandler(props.todolistID)
     };
 
-    const onChangeTitleTodolist = (title: string) => {
-
-    }
 
     return (
 
@@ -83,15 +81,20 @@ export function Todolist(props: PropsType) {
             </Typography>
 
             <div>
-                <form noValidate autoComplete="off">
                     <TextField id="outlined-basic" label="Enter new title" variant="outlined" type="textarea"
                                onChange={onChangeNewTaskHandler}
                                onKeyDown={onEnterHandler}
+
                                value={newTask}
                                size='small'
                     />
-                    <Button variant="contained" color="primary" onClick={onCreateHandler}>Create</Button>
-                </form>
+                    <Button variant="contained"
+                            color="primary"
+                            onClick={onCreateHandler}
+                    >
+                        Create
+                    </Button>
+
 
                 <div style={{color: 'red'}}>
                     {invalidTitle && 'Invalid value!'}
