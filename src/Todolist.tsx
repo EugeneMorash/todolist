@@ -3,6 +3,7 @@ import {FilterType, TaskType} from "./App";
 import {Button, ButtonGroup, Checkbox, IconButton, TextField, Typography} from "@material-ui/core";
 import {Delete as DeleteIcon} from "@material-ui/icons";
 import {ClearRounded as ClearIcon} from '@material-ui/icons/';
+import {EditableSpan} from "./EditableSpan";
 
 
 export type PropsType = {
@@ -24,6 +25,7 @@ const checkedStyle: CSSProperties = {
 }
 
 export function Todolist(props: PropsType) {
+
 
     const [newTask, setNewTask] = useState<string>('')
     const [invalidTitle, setInvalidTitle] = useState<boolean>(false)
@@ -62,12 +64,17 @@ export function Todolist(props: PropsType) {
         props.deleteTodolistHandler(props.todolistID)
     };
 
-    return (
+    const onChangeTitleTodolist = (title: string) => {
 
+    }
+
+    return (
 
         <div>
             <Typography variant="h4" component="h3">
-                {props.title}
+                <EditableSpan onChangeTitle={onChangeTitleTodolist}>
+                    {props.title}
+                </EditableSpan>
                 <IconButton onClick={OnDeleteTaskHandler}
                             aria-label='delete'
                             color='secondary'>
@@ -77,7 +84,6 @@ export function Todolist(props: PropsType) {
 
             <div>
                 <form noValidate autoComplete="off">
-
                     <TextField id="outlined-basic" label="Enter new title" variant="outlined" type="textarea"
                                onChange={onChangeNewTaskHandler}
                                onKeyDown={onEnterHandler}
@@ -86,7 +92,6 @@ export function Todolist(props: PropsType) {
                     />
                     <Button variant="contained" color="primary" onClick={onCreateHandler}>Create</Button>
                 </form>
-
 
                 <div style={{color: 'red'}}>
                     {invalidTitle && 'Invalid value!'}
