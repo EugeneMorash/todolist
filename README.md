@@ -2,4 +2,4 @@
 
 CRUD + Material UI
 
-You can view the website [here](https://eugenemorash.github.io/timer/)
+You can view the website [here](https://eugenemorash.github.io/todolist/)
